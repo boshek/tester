@@ -1,3 +1,10 @@
+name: test-job
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -6,13 +13,19 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.10]
     name: Python ${{ matrix.python-version }} example
+
     steps:
       - uses: actions/checkout@v3
-      - name: Setup conda
+
+      - name: Setup Conda
         uses: s-weigand/setup-conda@v1
         with:
           update-conda: true
           python-version: ${{ matrix.python-version }}
           conda-channels: anaconda, conda-forge
-      - run: conda --version
-      - run: which python
+
+      - name: Verify Conda installation
+        run: conda --version
+
+      - name: Check Python path
+        run: which python
